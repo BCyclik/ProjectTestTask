@@ -3,13 +3,13 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class PreloaderController : MonoBehaviour
 {
-    private Animator animator; // Переменная компонента
-    public Animator Animator // Переопределение для получения компонента animator
+    private Animator animator; // РџРµСЂРµРјРµРЅРЅР°СЏ РєРѕРјРїРѕРЅРµРЅС‚Р° animator
+    public Animator Animator
     {
         get
         {
-            if (!animator) animator = GetComponent<Animator>(); // Если переменная пустая, назначить animator
-            return animator; // Вернуть компонент animator
+            if (!animator) animator = GetComponent<Animator>(); // РџРѕР»СѓС‡РёС‚СЊ РєРѕРјРїРѕРЅРµРЅС‚ animator
+            return animator;
         }
     }
 }

@@ -1,18 +1,20 @@
-using UnityEngine;
 
-public interface IHealth
+namespace Game
 {
-    /* Функция получить кол-во жизней */
-    public float GetHealth()
+    public interface IHealth
     {
-        return -1;
-    }
-    /* Функция добавления жизней */
-    public void TakeDamage(float value)
-    {
-    }
-    /* Функция добавления жизней */
-    public void AddHealth(float value)
-    {
+        /* Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ РєРѕР»-РІР° Р·РґРѕСЂРѕРІСЊСЏ */
+        public float GetHealth()
+        {
+            return -1;
+        }
+        /* Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ СѓСЂРѕРЅР° */
+        public void TakeDamage(float value)
+        {
+        }
+        /* Р¤СѓРЅРєС†РёСЏ РѕС‚РЅСЏС‚РёСЏ Р·РґРѕСЂРѕРІСЊСЏ */
+        public void AddHealth(float value)
+        {
+        }
     }
 }

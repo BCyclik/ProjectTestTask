@@ -11,7 +11,7 @@ namespace Game
         {
             get
             {
-                if (!playerController) playerController = GetComponent<Player>(); // Назначить компонент в переменную
+                if (!playerController) playerController = GetComponent<Player>(); // РџРѕР»СѓС‡РёС‚СЊ РєРѕРјРїРѕРЅРµРЅС‚ РІ РїРµСЂРµРјРµРЅРЅСѓСЋ
                 return playerController;
             }
         }
@@ -21,7 +21,7 @@ namespace Game
         }
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
-            stream.Serialize(ref PlayerController.health); // Синхронизировать жизни игрока
+            stream.Serialize(ref PlayerController.health); // РЎРёРЅС…СЂРѕРёР·РёСЂРѕРІР°С‚СЊ Р·РґРѕСЂРѕРІСЊРµ
         }
     }
 }

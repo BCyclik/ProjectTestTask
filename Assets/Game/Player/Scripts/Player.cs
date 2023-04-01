@@ -8,22 +8,31 @@ namespace Game
 
     public class Player : MonoBehaviour, IHealth
     {
-        [Tooltip("Жизни игрока")]
+        [Tooltip("Р—РґРѕСЂРѕРІСЊРµ")]
         [SerializeField] public float health = 100;
-        [Tooltip("Скорость передвижения")]
+        [Tooltip("РЎРєРѕСЂРѕСЃС‚СЊ РґРІРёР¶РµРЅРёСЏ")]
         [SerializeField] private float SpeedMove = 5f;
         [Space]
-        [Tooltip("Смещение камеры относительно игрока")]
-        [SerializeField] private Vector3 OffSetPosCamera = new(0, 1f, -10f);
+        [Tooltip("РЎРјРµС‰РµРЅРёРµ РєР°РјРµСЂС‹ РѕС‚ РїРѕР·РёС†РёРё РёРіСЂРѕРєР°")]
+        [SerializeField] private Vector3 OffSetPosCamera = new(0, 0, 0);
         [Space]
-        [Tooltip("Место куда крепиться оружие")]
-        [SerializeField] private Transform GunLocation;
-        [Tooltip("Текст над игроком о перезарядке")]
+        [Tooltip("РџРѕР·РёС†РёСЏ РІС‹СЃС‚СЂРµР»Р°")]
+        [SerializeField] private Transform ShootLocation;
+        [Tooltip("РўРµРєСЃС‚ РїРµСЂРµР·Р°СЂСЏРґРєРё РѕСЂСѓР¶РёСЏ")]
         [SerializeField] public TextMeshPro ReloadGun_Text;
 
-        public static Player LocalPlayer; // Статическая переменная локального игрока
+        public static Player LocalPlayer; // Р›РѕРєР°Р»СЊРЅС‹Р№ РёРіСЂРѕРє
 
-        [HideInInspector] public PlayerNetworkController playerNetworkController;
+        private PlayerNetworkController playerNetworkController; // РџРµСЂРµРјРµРЅРЅР°СЏ СЃРµС‚РµРІРѕРіРѕ РєРѕРЅС‚СЂРѕР»Р»РµСЂР° РёРіСЂРѕРєР°
+        public PlayerNetworkController PlayerNetworkController
+        {
+            get
+            {
+                if (!playerNetworkController) playerNetworkController = GetComponent<PlayerNetworkController>(); // РџРѕР»СѓС‡РёС‚СЊ РєРѕРјРїРѕРЅРµРЅС‚
+                return playerNetworkController;
+            }
+        }
+
         private Animator animator;
 
         public float Health
@@ -37,27 +46,26 @@ namespace Game
         }
         private void Awake()
         {
-            playerNetworkController = GetComponent<PlayerNetworkController>(); // Назначить компонент в переменную
-            ReloadGun_Text.gameObject.SetActive(false); // Выключить текст перезарядки
+            ReloadGun_Text.gameObject.SetActive(false); // Р’С‹РєР»СЋС‡РёС‚СЊ
 
-            if (!playerNetworkController.photonView.IsMine) return; // Если не мы - не продолжать
+            if (!playerNetworkController.photonView.IsMine) return; // Р•СЃР»Рё РЅРµ СЏ - РЅРµ РїСЂРѕРґРѕР»Р¶Р°С‚СЊ
         }
         private void Update()
         {
-            if (!playerNetworkController.photonView.IsMine) return; // Если не мы - не продолжать
-            Camera.main.transform.position = transform.position + OffSetPosCamera; // Назначить позицию камере относительно игрока + смещение
+            if (!playerNetworkController.photonView.IsMine) return; // Р•СЃР»Рё РЅРµ СЏ - РЅРµ РїСЂРѕРґРѕР»Р¶Р°С‚СЊ
+            Camera.main.transform.position = transform.position + OffSetPosCamera; // РџРѕР·РёС†РёСЏ РєР°РјРµСЂС‹ РЅР° РёРіСЂРѕРєРµ + offset
         }
-        /* Функция получить кол-во жизней */
+        /* РџРѕР»СѓС‡РёС‚СЊ Р·РґРѕСЂРѕРІСЊРµ */
         public float GetHealth()
         {
             return Health;
         }
-        /* Функция отнятия жизней */
+        /* РџРѕР»СѓС‡РёС‚СЊ СѓСЂРѕРЅ */
         public void TakeDamage(float value)
         {
             Health -= value;
         }
-        /* Функция добавления жизней */
+        /* Р”РѕР±Р°РІРёС‚СЊ Р·РґРѕСЂРѕРІСЊСЏ */
         public void AddHealth(float value)
         {
             Health += value;
