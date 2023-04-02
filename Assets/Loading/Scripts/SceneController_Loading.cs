@@ -7,11 +7,17 @@ namespace Loading
 {
     public class SceneController_Loading : MonoBehaviourPunCallbacks
     {
-        [SerializeField] private PreloaderController _preloader; // Контроллер прелоудера
-        [SerializeField] private TMP_Text status_text; // Текс статуса подключения
+        [Header("Контроллер прелоудера")]
+        [SerializeField] private PreloaderController _preloader;
+        [Header("Текст статуса подключения")]
+        [SerializeField] private TMP_Text status_text;
+        [Header("Панель записи имени игрока")]
+        [SerializeField] private NickNamePlayerPanel nickNamePlayerPanel;
         private void Awake()
         {
             Debug.Log("[SceneController_Loading] Awake");
+            nickNamePlayerPanel.gameObject.SetActive(false);
+
             status_text.SetText("Подключение к серверу..."); // Вывести статус подключения
             PhotonNetwork.AutomaticallySyncScene = true; // Синхронизация сцен
             PhotonNetwork.ConnectUsingSettings(); // Подключиться к серверу photon
@@ -32,7 +38,15 @@ namespace Loading
             status_text.SetText("Вход..."); // Вывести статус подключения
             base.OnJoinedLobby();
 
-            SceneManager.LoadScene("Lobby"); // Перейти на сцену лобби
+            if (PlayerPrefs.HasKey("NickName"))
+            {
+                PhotonNetwork.NickName = PlayerPrefs.GetString("NickName"); // Вытащить nickname игрока
+                SceneManager.LoadScene("Lobby"); // Перейти на сцену лобби
+            } 
+            else
+            {
+                nickNamePlayerPanel.Init(); // Открыть окно выбора nickname
+            }
         }
     }
 }

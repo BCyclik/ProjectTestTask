@@ -7,9 +7,9 @@ namespace Lobby
 {
     public class SceneController_Lobby : MonoBehaviourPunCallbacks
     {
-        [Tooltip("Переменная контроллера создания комнаты")]
+        [Header("Контроллер создания комнаты")]
         [SerializeField] private CreateRoomController createRoomController;
-        [Tooltip("Переменная контроллера поиска комнаты")]
+        [Header("Контроллер поиска комнаты")]
         [SerializeField] private FindRoomController findRoomController;
 
         private static SceneController_Lobby instance;

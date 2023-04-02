@@ -7,9 +7,9 @@ namespace Lobby
     {
         [SerializeField] private string NameRoom = "None";
         [Space]
-        [Tooltip("Переменная кнопки поиск комнаты")]
+        [Header("Кнопка поиск комнаты")]
         [SerializeField] private Button FindRoom_Button;
-        [Tooltip("Поле для ввода названия комнаты")]
+        [Header("Поле для ввода названия комнаты")]
         [SerializeField] private TMP_InputField FindRoom_InputField;
 
         public void Init(SceneController_Lobby lobbyController)
