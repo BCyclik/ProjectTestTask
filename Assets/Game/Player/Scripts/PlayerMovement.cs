@@ -2,12 +2,11 @@ using GameInterface;
 using UnityEngine;
 namespace Game
 {
-    [RequireComponent(typeof(CapsuleCollider2D))]
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerMovement : MonoBehaviour
     {
         [Header("Скорость движения")]
-        [SerializeField] private float SpeedMove = 5f;
+        [SerializeField] private float SpeedMove = 2f;
         private Player playerController;
         private Player PlayerController
         {
