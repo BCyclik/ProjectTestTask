@@ -10,6 +10,7 @@ namespace Game
         private void Awake()
         {
             transform.SetParent(SceneController_Game.Instance.parentCoins); // Назначить родителя для монеты
+            SceneController_Game.Instance.CountCoinNow++; // Добавить новую монету для счетчика
         }
         private void OnTriggerEnter2D(Collider2D collision)
         {
@@ -19,6 +20,10 @@ namespace Game
 
             if (!photonView.IsMine) return; // Если не masterserver - не продолжать
             PhotonNetwork.Destroy(gameObject);
+        }
+        private void OnDestroy()
+        {
+            SceneController_Game.Instance.CountCoinNow--; // Удалить монету из счетчика
         }
     }
 }

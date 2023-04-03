@@ -4,6 +4,7 @@ using Photon.Realtime;
 using GameInterface;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.Events;
 
 namespace Game {
     [RequireComponent(typeof(PhotonView))]
@@ -23,6 +24,11 @@ namespace Game {
 
         private int CountLifePlayers = 1;
 
+        const int MaxCoinsInMap = 10; // Максимальное кол-во монет на карте за раз
+        public int CountCoinNow = 0; // Кол-во монет на карте сейчас
+
+        private Vector2 minPos, maxPos; // Для вычисления позиции появления новой монеты
+
         private static SceneController_Game instance;
         public static SceneController_Game Instance
         {
@@ -33,7 +39,33 @@ namespace Game {
         }
         private void Awake()
         {
+            GetSpawnCoinsZone();
             SpawnPlayer();
+        }
+        private void GetSpawnCoinsZone()
+        {
+            Vector2 pos1 = background.GetChild(0).position;
+            Vector2 pos2 = background.GetChild(1).position;
+            if (pos1.x < pos2.x)
+            {
+                minPos.x = pos1.x;
+                maxPos.x = pos2.x;
+            }
+            else
+            {
+                minPos.x = pos2.x;
+                maxPos.x = pos1.x;
+            }
+            if (pos1.y < pos2.y)
+            {
+                minPos.y = pos1.y;
+                maxPos.y = pos2.y;
+            }
+            else
+            {
+                minPos.y = pos2.y;
+                maxPos.y = pos1.y;
+            }
         }
         private void SpawnPlayer()
         {
@@ -48,6 +80,7 @@ namespace Game {
         public override void OnLeftRoom()
         {
             Debug.Log("[SceneController_Game] OnLeftRoom");
+            IsStartGame = false;
         }
         public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
         {
@@ -94,8 +127,8 @@ namespace Game {
         /* Функция спавна монеты */
         private void SpawnCoin()
         {
-            float x = Random.Range(-background.localScale.x / 2 + 1, background.localScale.x / 2 - 1); // Случайный X в диапазоне поля
-            float y = Random.Range(-background.localScale.y / 2 + 1, background.localScale.y / 2 - 1); // Случайный Y в диапазоне поля
+            float x = Random.Range(minPos.x + 1, maxPos.x / 2 - 1); // Случайный X в диапазоне поля
+            float y = Random.Range(minPos.y + 1, maxPos.y - 1); // Случайный Y в диапазоне поля
             PhotonNetwork.InstantiateRoomObject(coinPrefab.name, new Vector2(x, y), Quaternion.identity); // Создать монету
 
             Debug.Log($"[SceneController_Game] SpawnCoin - {x} : {y}");
@@ -116,8 +149,12 @@ namespace Game {
         {
             Debug.Log("[SceneController_Game] ScatterCoins");
 
-            for (int i = 0; i < countCoins; i++) 
+            for (int i = 0; i < countCoins; i++)
+            {
+                if (!IsStartGame) return; // Если не запущена - не продолжать
+                if (CountCoinNow >= MaxCoinsInMap) return; // Проверить кол-во монет на карте
                 SpawnCoin(); // Заспавнить новую монету
+            }
         }
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
