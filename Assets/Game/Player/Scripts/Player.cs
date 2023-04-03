@@ -70,7 +70,7 @@ namespace Game
 
             if (!PlayerNetworkController.photonView.IsMine)
             {
-                Body.color = new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255)); // Получить случайный цвет
+                Body.color = new Color(Random.value, Random.value, Random.value); // Получить случайный цвет
                 return; // Если не я - не продолжать
             }
             GUIController.Instance.SetState(Health); // Обновить статусы GUI
