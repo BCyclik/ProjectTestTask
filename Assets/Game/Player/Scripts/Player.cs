@@ -52,7 +52,6 @@ namespace Game
                 if (PlayerNetworkController.photonView.IsMine) GUIController.Instance.SetHealth(health); // Изменить значения в графическом интерфейсе игрока
                 if (health > 0) return;
                 if (PlayerNetworkController.photonView.IsMine) SceneController_Game.Instance.EndGame(false); // Показать игроку конец игры
-                else gameObject.SetActive(false); // Выключить игрока у других игроков
             }
             get { return health; }
         }
@@ -71,7 +70,7 @@ namespace Game
 
             if (!PlayerNetworkController.photonView.IsMine)
             {
-                Body.color = new Color(Random.value, Random.value, Random.value); // Получить случайный цвет
+                Body.color = new Color(Random.Range(0, 255), Random.Range(0, 255), Random.Range(0, 255)); // Получить случайный цвет
                 return; // Если не я - не продолжать
             }
             GUIController.Instance.SetState(Health); // Обновить статусы GUI
